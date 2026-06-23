@@ -13,7 +13,6 @@ public class UsuarioDao {
     public UsuarioDao() {
         this.conn = Conexion.getInstancia().getConnection();
     }
-
     public Usuario autenticar(String usuario, String password) {
 
         String sql = "SELECT id, nombre, usuario, password, rol FROM usuarios "
