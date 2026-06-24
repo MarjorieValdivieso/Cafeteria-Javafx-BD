@@ -18,56 +18,26 @@
                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 15, 0.3, 0, 5);
               "
               maxWidth="320">
-
-            <!-- TITULO -->
             <Label text="☕ LOGIN CAFETERÍA"
                    style="-fx-font-size:20px; -fx-font-weight:bold;"/>
-
-            <Label text="Ingresa tus credenciales"
-                   style="-fx-text-fill:gray;"/>
-
-            <!-- USUARIO -->
             <TextField fx:id="campoUsuario"
                        promptText="Usuario"
-                       prefWidth="250"
-                       style="
-                         -fx-background-radius: 10;
-                         -fx-border-radius: 10;
-                         -fx-border-color: #d1d5db;
-                       "/>
-
-            <!-- ROL -->
+                       prefWidth="250"/>
             <ComboBox fx:id="comboRol"
                       promptText="Selecciona rol"
-                      prefWidth="250"
-                      style="
-                        -fx-background-radius: 10;
-                        -fx-border-radius: 10;
-                        -fx-border-color: #d1d5db;
-                      "/>
-
-            <!-- PASSWORD -->
+                      prefWidth="250"/>
             <PasswordField fx:id="campoPassword"
                            promptText="Contraseña"
-                           prefWidth="250"
-                           style="
-                             -fx-background-radius: 10;
-                             -fx-border-radius: 10;
-                             -fx-border-color: #d1d5db;
-                           "/>
-
-            <!-- BOTÓN -->
+                           prefWidth="250"/>
             <Button text="INGRESAR"
                     onAction="#handleLogin"
                     prefWidth="250"
                     style="
-                        -fx-background-color: #22c55e;
-                        -fx-text-fill: white;
-                        -fx-font-weight: bold;
-                        -fx-background-radius: 10;
+                        -fx-background-color:#22c55e;
+                        -fx-text-fill:white;
+                        -fx-font-weight:bold;
+                        -fx-background-radius:10;
                     "/>
-
-            <!-- ERROR -->
             <Label fx:id="etiquetaError"
                    textFill="red"
                    visible="false"/>

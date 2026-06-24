@@ -9,23 +9,11 @@ import modelo.Producto;
 import modelo.Usuario;
 
 public class DashboardController {
-
-    // =========================
-    // USUARIO LOGUEADO
-    // =========================
     private Usuario usuario;
-
-    // =========================
-    // FORMULARIO
-    // =========================
     @FXML private TextField txtNombre;
     @FXML private TextField txtPrecio;
     @FXML private TextField txtStock;
     @FXML private TextField txtCategoria;
-
-    // =========================
-    // TABLEVIEW
-    // =========================
     @FXML private TableView<Producto> tablaProductos;
     @FXML private TableColumn<Producto, Integer> colId;
     @FXML private TableColumn<Producto, String> colNombre;
@@ -35,28 +23,16 @@ public class DashboardController {
 
     private final ProductoDao productoDAO = new ProductoDao();
     private final ObservableList<Producto> lista = FXCollections.observableArrayList();
-
-    // =========================
-    // INICIALIZAR JAVAFX
-    // =========================
     @FXML
     public void initialize() {
         configurarColumnas();
         cargarProductos();
     }
-
-    // =========================
-    // RECIBE USUARIO DEL LOGIN
-    // =========================
     public void inicializar(Usuario usuario) {
         this.usuario = usuario;
 
         System.out.println("Bienvenido: " + usuario.getNombre());
     }
-
-    // =========================
-    // COLUMNAS
-    // =========================
     private void configurarColumnas() {
 
         colId.setCellValueFactory(c ->
@@ -74,19 +50,11 @@ public class DashboardController {
         colCategoria.setCellValueFactory(c ->
                 new javafx.beans.property.SimpleStringProperty(c.getValue().getCategoria()));
     }
-
-    // =========================
-    // CARGAR PRODUCTOS
-    // =========================
     private void cargarProductos() {
         lista.clear();
         lista.addAll(productoDAO.listar());
         tablaProductos.setItems(lista);
     }
-
-    // =========================
-    // AGREGAR
-    // =========================
     @FXML
     public void agregarProducto() {
 
@@ -105,10 +73,6 @@ public class DashboardController {
             mostrarError("Error al agregar");
         }
     }
-
-    // =========================
-    // ACTUALIZAR
-    // =========================
     @FXML
     public void actualizarProducto() {
 
@@ -132,10 +96,6 @@ public class DashboardController {
             mostrarError("Error al actualizar");
         }
     }
-
-    // =========================
-    // ELIMINAR
-    // =========================
     @FXML
     public void eliminarProducto() {
 
@@ -154,10 +114,6 @@ public class DashboardController {
             mostrarError("Error al eliminar");
         }
     }
-
-    // =========================
-    // SELECCIONAR
-    // =========================
     @FXML
     public void seleccionarProducto() {
 
@@ -170,20 +126,12 @@ public class DashboardController {
             txtCategoria.setText(p.getCategoria());
         }
     }
-
-    // =========================
-    // LIMPIAR
-    // =========================
     private void limpiar() {
         txtNombre.clear();
         txtPrecio.clear();
         txtStock.clear();
         txtCategoria.clear();
     }
-
-    // =========================
-    // MENSAJES
-    // =========================
     private void mostrarMensaje(String msg) {
         Alert a = new Alert(Alert.AlertType.INFORMATION);
         a.setContentText(msg);

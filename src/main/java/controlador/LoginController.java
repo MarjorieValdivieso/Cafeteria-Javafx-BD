@@ -1,7 +1,6 @@
 package controlador;
 
 import dao.UsuarioDao;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -13,65 +12,39 @@ import modelo.Usuario;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class LoginController {
 
-    @FXML private ComboBox<String> comboUsuarios;
+    @FXML private TextField campoUsuario;
     @FXML private ComboBox<String> comboRol;
     @FXML private PasswordField campoPassword;
     @FXML private Label etiquetaError;
 
     private final UsuarioDao usuarioDAO = new UsuarioDao();
     private List<Usuario> usuarios;
-
-    // ================= INIT =================
     @FXML
     public void initialize() {
+
+        comboRol.getItems().setAll("ADMIN", "CAJERO", "BARISTA");
         etiquetaError.setVisible(false);
-        cargarRoles();
-        cargarUsuarios();
     }
-
-    // ================= ROLES =================
-    private void cargarRoles() {
-        comboRol.getItems().addAll("ADMIN", "CAJERO", "BARISTA");
-    }
-
-    // ================= USUARIOS =================
-    private void cargarUsuarios() {
-
-        usuarios = usuarioDAO.listar();
-
-        comboUsuarios.setItems(
-                FXCollections.observableArrayList(
-                        usuarios.stream()
-                                .map(Usuario::getUsuario)
-                                .collect(Collectors.toList())
-                )
-        );
-    }
-
-    // ================= LOGIN =================
     @FXML
     public void handleLogin(javafx.event.ActionEvent event) {
 
-        etiquetaError.setVisible(false);
-
-        String usuarioSeleccionado = comboUsuarios.getValue();
-        String rolSeleccionado = comboRol.getValue();
+        String usuario = campoUsuario.getText();
+        String rol = comboRol.getValue();
         String password = campoPassword.getText();
 
-        if (usuarioSeleccionado == null || rolSeleccionado == null || password.isEmpty()) {
+        if (usuario == null || rol == null || password.isEmpty()) {
             mostrarError("Completa usuario, rol y contraseña.");
             return;
         }
 
-        Usuario u = usuarioDAO.autenticar(usuarioSeleccionado, password);
+        Usuario u = usuarioDAO.autenticar(usuario, password);
 
         if (u != null) {
 
-            if (!u.getRol().name().equals(rolSeleccionado)) {
+            if (!u.getRol().name().equals(rol)) {
                 mostrarError("El rol no coincide con el usuario.");
                 return;
             }
@@ -83,13 +56,11 @@ public class LoginController {
             campoPassword.clear();
         }
     }
-
-    // ================= DASHBOARD =================
     private void abrirDashboard(javafx.event.ActionEvent event, Usuario usuario) {
 
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/vista/dashboard.fxml")
+                    getClass().getResource("/vistas/dashboard.fxml")
             );
 
             Parent root = loader.load();
@@ -103,11 +74,9 @@ public class LoginController {
             stage.show();
 
         } catch (IOException e) {
-            mostrarError("Error al abrir sistema: " + e.getMessage());
+            mostrarError("Error al abrir dashboard: " + e.getMessage());
         }
     }
-
-    // ================= ERROR =================
     private void mostrarError(String msg) {
         etiquetaError.setText(msg);
         etiquetaError.setVisible(true);
