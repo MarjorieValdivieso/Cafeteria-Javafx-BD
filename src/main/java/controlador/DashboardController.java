@@ -6,14 +6,26 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import modelo.Producto;
+import modelo.Usuario;
 
 public class DashboardController {
 
+    // =========================
+    // USUARIO LOGUEADO
+    // =========================
+    private Usuario usuario;
+
+    // =========================
+    // FORMULARIO
+    // =========================
     @FXML private TextField txtNombre;
     @FXML private TextField txtPrecio;
     @FXML private TextField txtStock;
     @FXML private TextField txtCategoria;
 
+    // =========================
+    // TABLEVIEW
+    // =========================
     @FXML private TableView<Producto> tablaProductos;
     @FXML private TableColumn<Producto, Integer> colId;
     @FXML private TableColumn<Producto, String> colNombre;
@@ -24,24 +36,57 @@ public class DashboardController {
     private final ProductoDao productoDAO = new ProductoDao();
     private final ObservableList<Producto> lista = FXCollections.observableArrayList();
 
+    // =========================
+    // INICIALIZAR JAVAFX
+    // =========================
     @FXML
     public void initialize() {
         configurarColumnas();
         cargarProductos();
     }
-    private void configurarColumnas() {
-        colId.setCellValueFactory(c -> new javafx.beans.property.SimpleIntegerProperty(c.getValue().getId()).asObject());
-        colNombre.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getNombre()));
-        colPrecio.setCellValueFactory(c -> new javafx.beans.property.SimpleObjectProperty<>(c.getValue().getPrecio()));
-        colStock.setCellValueFactory(c -> new javafx.beans.property.SimpleIntegerProperty(c.getValue().getStock()).asObject());
-        colCategoria.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getCategoria()));
+
+    // =========================
+    // RECIBE USUARIO DEL LOGIN
+    // =========================
+    public void inicializar(Usuario usuario) {
+        this.usuario = usuario;
+
+        System.out.println("Bienvenido: " + usuario.getNombre());
     }
+
+    // =========================
+    // COLUMNAS
+    // =========================
+    private void configurarColumnas() {
+
+        colId.setCellValueFactory(c ->
+                new javafx.beans.property.SimpleIntegerProperty(c.getValue().getId()).asObject());
+
+        colNombre.setCellValueFactory(c ->
+                new javafx.beans.property.SimpleStringProperty(c.getValue().getNombre()));
+
+        colPrecio.setCellValueFactory(c ->
+                new javafx.beans.property.SimpleObjectProperty<>(c.getValue().getPrecio()));
+
+        colStock.setCellValueFactory(c ->
+                new javafx.beans.property.SimpleIntegerProperty(c.getValue().getStock()).asObject());
+
+        colCategoria.setCellValueFactory(c ->
+                new javafx.beans.property.SimpleStringProperty(c.getValue().getCategoria()));
+    }
+
+    // =========================
+    // CARGAR PRODUCTOS
+    // =========================
     private void cargarProductos() {
         lista.clear();
         lista.addAll(productoDAO.listar());
         tablaProductos.setItems(lista);
     }
 
+    // =========================
+    // AGREGAR
+    // =========================
     @FXML
     public void agregarProducto() {
 
@@ -61,6 +106,9 @@ public class DashboardController {
         }
     }
 
+    // =========================
+    // ACTUALIZAR
+    // =========================
     @FXML
     public void actualizarProducto() {
 
@@ -85,6 +133,9 @@ public class DashboardController {
         }
     }
 
+    // =========================
+    // ELIMINAR
+    // =========================
     @FXML
     public void eliminarProducto() {
 
@@ -103,6 +154,10 @@ public class DashboardController {
             mostrarError("Error al eliminar");
         }
     }
+
+    // =========================
+    // SELECCIONAR
+    // =========================
     @FXML
     public void seleccionarProducto() {
 
@@ -115,12 +170,20 @@ public class DashboardController {
             txtCategoria.setText(p.getCategoria());
         }
     }
+
+    // =========================
+    // LIMPIAR
+    // =========================
     private void limpiar() {
         txtNombre.clear();
         txtPrecio.clear();
         txtStock.clear();
         txtCategoria.clear();
     }
+
+    // =========================
+    // MENSAJES
+    // =========================
     private void mostrarMensaje(String msg) {
         Alert a = new Alert(Alert.AlertType.INFORMATION);
         a.setContentText(msg);
